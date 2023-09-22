@@ -115,6 +115,17 @@ void loop(void) {
   serialOut(F("Rounded rects (outline)\t"), usecRoundRects, 100, true);
   delay(1000);
 
+  int32_t usecPfdLineGauge = testPfdGaugeLine(20, 30, 0);
+  serialOut(F("PFD Line Gauge\t"), usecPfdLineGauge, 100, true);
+  testPfdGaugeLine(22, 30, 0);
+  testPfdGaugeLine(24, 30, 0);
+  testPfdGaugeLine(26, 30, 0);
+  testPfdGaugeLine(28, 30, 0);
+  testPfdGaugeLine(30, 30, 0);
+  delay(1000);
+  testPfdGaugeLine(10, 30, 0);
+
+
 #ifdef CANVAS
   uint32_t start = micros_start();
   gfx->flush();
@@ -166,6 +177,7 @@ void loop(void) {
   printnice(F("Arcs        "), usecArcs);
   printnice(F("RoundRects F"), usecFilledRoundRects);
   printnice(F("RoundRects  "), usecRoundRects);
+  printnice(F("PFD Line Gauge  "), usecPfdLineGauge);
 
   if ((h > w) || (h > 240)) {
     gfx->setTextSize(tsc);
@@ -546,4 +558,24 @@ int32_t testRoundRects() {
   }
 
   return micros() - start;
+}
+
+int32_t testPfdGaugeLine(uint16_t value, uint16_t max, uint16_t min) {
+  uint32_t start;
+  uint16_t x = 70;
+  uint16_t y = 50;
+  uint16_t h = 200;
+  uint16_t w = 50;
+
+
+  start = micros_start();
+  uint16_t v = (value * h) / (max - min);
+
+  gfx->drawFastHLine(x, y, w, WHITE);
+  gfx->drawFastVLine(x + w, y, h, WHITE);
+  gfx->drawFastHLine(x, y + h, w, WHITE);
+  gfx->drawTriangle(x, v + (w/3), x + w, v, x, v - (w/3), WHITE);
+
+  return micros() - start;
+
 }
