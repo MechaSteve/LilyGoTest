@@ -1,7 +1,22 @@
 #include "Arduino.h"
+#include "U8g2lib.h"
 #include "Arduino_GFX_Library.h"
 #include "img_logo.h"
 #include "pin_config.h"
+
+// Color definitions
+//#define GREEN 0x07E0       ///<   0, 255,   0
+#define GREEN_1 0x0700       ///<   0, 224,   0
+#define GREEN_2 0x0600       ///<   0, 192,   0
+#define GREEN_3 0x0540       ///<   0, 168,   0
+//#define YELLOW 0xFFE0      ///< 255, 255,   0
+#define YELLOW_1 0xE700       ///< 224, 224,   0
+#define YELLOW_2 0xC600       ///< 192, 192,   0
+#define YELLOW_3 0xAD40       ///< 168, 168,   0
+//#define RED 0xF800         ///< 255,   0,   0
+#define RED_1 0xE800       ///< 224,   0,   0
+#define RED_2 0xD000       ///< 192,   0,   0
+#define RED_3 0xC000       ///< 168,   0,   0
 
 Arduino_DataBus *bus = new Arduino_ESP32LCD8(7 /* DC */, 6 /* CS */, 8 /* WR */, 9 /* RD */, 39 /* D0 */, 40 /* D1 */, 41 /* D2 */, 42 /* D3 */,
                                              45 /* D4 */, 46 /* D5 */, 47 /* D6 */, 48 /* D7 */);
@@ -55,49 +70,49 @@ static inline uint32_t micros_start() {
 void loop(void) {
   Serial.println(F("Benchmark\tmicro-secs"));
 
-  int32_t usecFillScreen = testFillScreen();
-  serialOut(F("Screen fill\t"), usecFillScreen, 100, true);
-  delay(1000);
+  // int32_t usecFillScreen = testFillScreen();
+  // serialOut(F("Screen fill\t"), usecFillScreen, 100, true);
+  // delay(1000);
 
   int32_t usecText = testText();
   serialOut(F("Text\t"), usecText, 3000, true);
   delay(1000);
 
-  int32_t usecPixels = testPixels();
-  serialOut(F("Pixels\t"), usecPixels, 100, true);
-  delay(1000);
+  // int32_t usecPixels = testPixels();
+  // serialOut(F("Pixels\t"), usecPixels, 100, true);
+  // delay(1000);
 
-  int32_t usecLines = testLines();
-  serialOut(F("Lines\t"), usecLines, 100, true);
-  delay(1000);
+  // int32_t usecLines = testLines();
+  // serialOut(F("Lines\t"), usecLines, 100, true);
+  // delay(1000);
 
-  int32_t usecFastLines = testFastLines();
-  serialOut(F("Horiz/Vert Lines\t"), usecFastLines, 100, true);
-  delay(1000);
+  // int32_t usecFastLines = testFastLines();
+  // serialOut(F("Horiz/Vert Lines\t"), usecFastLines, 100, true);
+  // delay(1000);
 
-  int32_t usecFilledRects = testFilledRects();
-  serialOut(F("Rectangles (filled)\t"), usecFilledRects, 100, false);
-  delay(1000);
+  // int32_t usecFilledRects = testFilledRects();
+  // serialOut(F("Rectangles (filled)\t"), usecFilledRects, 100, false);
+  // delay(1000);
 
-  int32_t usecRects = testRects();
-  serialOut(F("Rectangles (outline)\t"), usecRects, 100, true);
-  delay(1000);
+  // int32_t usecRects = testRects();
+  // serialOut(F("Rectangles (outline)\t"), usecRects, 100, true);
+  // delay(1000);
 
-  int32_t usecFilledTrangles = testFilledTriangles();
-  serialOut(F("Triangles (filled)\t"), usecFilledTrangles, 100, false);
-  delay(1000);
+  // int32_t usecFilledTrangles = testFilledTriangles();
+  // serialOut(F("Triangles (filled)\t"), usecFilledTrangles, 100, false);
+  // delay(1000);
 
-  int32_t usecTriangles = testTriangles();
-  serialOut(F("Triangles (outline)\t"), usecTriangles, 100, true);
-  delay(1000);
+  // int32_t usecTriangles = testTriangles();
+  // serialOut(F("Triangles (outline)\t"), usecTriangles, 100, true);
+  // delay(1000);
 
-  int32_t usecFilledCircles = testFilledCircles(10);
-  serialOut(F("Circles (filled)\t"), usecFilledCircles, 100, false);
-  delay(1000);
+  // int32_t usecFilledCircles = testFilledCircles(10);
+  // serialOut(F("Circles (filled)\t"), usecFilledCircles, 100, false);
+  // delay(1000);
 
-  int32_t usecCircles = testCircles(10);
-  serialOut(F("Circles (outline)\t"), usecCircles, 100, true);
-  delay(1000);
+  // int32_t usecCircles = testCircles(10);
+  // serialOut(F("Circles (outline)\t"), usecCircles, 100, true);
+  // delay(1000);
 
   int32_t usecFilledArcs = testFillArcs();
   serialOut(F("Arcs (filled)\t"), usecFilledArcs, 100, false);
@@ -107,23 +122,18 @@ void loop(void) {
   serialOut(F("Arcs (outline)\t"), usecArcs, 100, true);
   delay(1000);
 
-  int32_t usecFilledRoundRects = testFilledRoundRects();
-  serialOut(F("Rounded rects (filled)\t"), usecFilledRoundRects, 100, false);
-  delay(1000);
+  // int32_t usecFilledRoundRects = testFilledRoundRects();
+  // serialOut(F("Rounded rects (filled)\t"), usecFilledRoundRects, 100, false);
+  // delay(1000);
 
-  int32_t usecRoundRects = testRoundRects();
-  serialOut(F("Rounded rects (outline)\t"), usecRoundRects, 100, true);
-  delay(1000);
+  // int32_t usecRoundRects = testRoundRects();
+  // serialOut(F("Rounded rects (outline)\t"), usecRoundRects, 100, true);
+  // delay(1000);
 
-  int32_t usecPfdLineGauge = testPfdGaugeLine(20, 30, 0);
+  int32_t usecPfdLineGauge = testPfdGaugeLine(68, 100, 0);
   serialOut(F("PFD Line Gauge\t"), usecPfdLineGauge, 100, true);
-  testPfdGaugeLine(22, 30, 0);
-  testPfdGaugeLine(24, 30, 0);
-  testPfdGaugeLine(26, 30, 0);
-  testPfdGaugeLine(28, 30, 0);
-  testPfdGaugeLine(30, 30, 0);
-  delay(1000);
-  testPfdGaugeLine(10, 30, 0);
+  testPfdGaugeLine(70, 100, 0);
+  delay(15000);
 
 
 #ifdef CANVAS
@@ -145,11 +155,12 @@ void loop(void) {
     }
   }
 
-  gfx->setCursor(0, 0);
 
   gfx->setTextSize(tsa);
   gfx->setTextColor(MAGENTA);
-  gfx->println(F("Arduino GFX PDQ"));
+  gfx->setFont(u8g2_font_helvB08_tf);
+  gfx->setCursor(0, 0);
+  gfx->println(F("\nArduino GFX PDQ"));
 
   if (h > w) {
     gfx->setTextSize(tsb);
@@ -162,22 +173,22 @@ void loop(void) {
     gfx->println(F("micro-secs"));
   }
 
-  printnice(F("Screen fill "), usecFillScreen);
+  // printnice(F("Screen fill "), usecFillScreen);
   printnice(F("Text        "), usecText);
-  printnice(F("Pixels      "), usecPixels);
-  printnice(F("Lines       "), usecLines);
-  printnice(F("H/V Lines   "), usecFastLines);
-  printnice(F("Rectangles F"), usecFilledRects);
-  printnice(F("Rectangles  "), usecRects);
-  printnice(F("Triangles F "), usecFilledTrangles);
-  printnice(F("Triangles   "), usecTriangles);
-  printnice(F("Circles F   "), usecFilledCircles);
-  printnice(F("Circles     "), usecCircles);
+  // printnice(F("Pixels      "), usecPixels);
+  // printnice(F("Lines       "), usecLines);
+  // printnice(F("H/V Lines   "), usecFastLines);
+  // printnice(F("Rectangles F"), usecFilledRects);
+  // printnice(F("Rectangles  "), usecRects);
+  // printnice(F("Triangles F "), usecFilledTrangles);
+  // printnice(F("Triangles   "), usecTriangles);
+  // printnice(F("Circles F   "), usecFilledCircles);
+  // printnice(F("Circles     "), usecCircles);
   printnice(F("Arcs F      "), usecFilledArcs);
   printnice(F("Arcs        "), usecArcs);
-  printnice(F("RoundRects F"), usecFilledRoundRects);
-  printnice(F("RoundRects  "), usecRoundRects);
-  printnice(F("PFD Line Gauge  "), usecPfdLineGauge);
+  // printnice(F("RoundRects F"), usecFilledRoundRects);
+  // printnice(F("RoundRects  "), usecRoundRects);
+  printnice(F("PFD Tape Bar"), usecPfdLineGauge);
 
   if ((h > w) || (h > 240)) {
     gfx->setTextSize(tsc);
@@ -192,6 +203,8 @@ void loop(void) {
   delay(60 * 1000L);
 }
 
+
+// This function creates a delay and optionally clears the screen
 void serialOut(const __FlashStringHelper *item, int32_t v, uint32_t d, bool clear) {
 #ifdef CANVAS
   gfx->flush();
@@ -562,20 +575,109 @@ int32_t testRoundRects() {
 
 int32_t testPfdGaugeLine(uint16_t value, uint16_t max, uint16_t min) {
   uint32_t start;
-  uint16_t x = 70;
-  uint16_t y = 50;
-  uint16_t h = 200;
-  uint16_t w = 50;
+  uint32_t x = 70;
+  uint32_t y = 80;
+  uint32_t h = 178;
+  uint32_t w = 14;
+  uint32_t phh = 8; //pointer half height
+  uint32_t pw = w + 6; //pointer width
+  /// set both lo and hi to 0 to disable color tape
+  uint32_t lvl_bad_low_lo = 0; 
+  uint32_t lvl_bad_low_hi = 10;
+  uint32_t lvl_warn_low_lo = 10;
+  uint32_t lvl_warn_low_hi = 25;
+  uint32_t lvl_okay_hi = 70;
+  uint32_t lvl_okay_lo = 25;
+  uint32_t lvl_warn_high_lo = 70;
+  uint32_t lvl_warn_high_hi = 85;
+  uint32_t lvl_bad_high_lo = 85;
+  uint32_t lvl_bad_high_hi = 100;
 
 
   start = micros_start();
-  uint16_t v = (value * h) / (max - min);
+  // Scaleing : min is y, max is y + h, full display range is h
+  if (value < min) value = min;
+  if (value > max) value = max;
+  uint32_t range = max - min;
+  //  p3
+  //       p1
+  //  p2
+  uint32_t px1 = x + w;
+  uint32_t px2 = px1 - pw;
+  uint32_t px3 = px1 - pw;
+  uint32_t py1 = y + h - ((value - min) * h / range);
+  uint32_t py2 = py1 + phh;
+  uint32_t py3 = py1 - phh;
+  // tape points
+  uint32_t lvl_bad_low_lo_y = y + h - ((lvl_bad_low_lo - min) * h / range); 
+  uint32_t lvl_bad_low_hi_y = y + h - ((lvl_bad_low_hi - min) * h / range);
+  uint32_t lvl_warn_low_lo_y = y + h - ((lvl_warn_low_lo - min) * h / range);
+  uint32_t lvl_warn_low_hi_y = y + h - ((lvl_warn_low_hi - min) * h / range);
+  uint32_t lvl_okay_hi_y = y + h - ((lvl_okay_hi - min) * h / range);
+  uint32_t lvl_okay_lo_y = y + h - ((lvl_okay_lo - min) * h / range);
+  uint32_t lvl_warn_high_lo_y = y + h - ((lvl_warn_high_lo - min) * h / range);
+  uint32_t lvl_warn_high_hi_y = y + h - ((lvl_warn_high_hi - min) * h / range);
+  uint32_t lvl_bad_high_lo_y = y + h - ((lvl_bad_high_lo - min) * h / range);
+  uint32_t lvl_bad_high_hi_y = y + h - ((lvl_bad_high_hi - min) * h / range);
+  uint32_t tw = w - 2;
+  uint32_t tx = x + w - tw;
 
-  gfx->drawFastHLine(x, y, w, WHITE);
+  // baseline
+  gfx->drawFastHLine(x, y - 2, w + 2, WHITE);
+  gfx->drawFastHLine(x, y - 1, w + 2, WHITE);
   gfx->drawFastVLine(x + w, y, h, WHITE);
-  gfx->drawFastHLine(x, y + h, w, WHITE);
-  gfx->drawTriangle(x, v + (w/3), x + w, v, x, v - (w/3), WHITE);
+  gfx->drawFastVLine(x + w + 1, y, h, WHITE);
+  gfx->drawFastHLine(x, y + h + 1, w + 2, WHITE);
+  gfx->drawFastHLine(x, y + h + 2, w + 2, WHITE);
+  // color tapes
+  PfdColorVTape( x + 1, lvl_okay_hi_y, lvl_okay_lo_y, tw, GREEN);
+  PfdColorVTape( x + 1, lvl_warn_low_hi_y, lvl_warn_low_lo_y, tw, YELLOW);
+  PfdColorVTape( x + 1, lvl_warn_high_hi_y, lvl_warn_high_lo_y, tw, YELLOW);
+  PfdColorVTape( x + 1, lvl_bad_low_hi_y, lvl_bad_low_lo_y, tw, RED);
+  PfdColorVTape( x + 1, lvl_bad_high_hi_y, lvl_bad_high_lo_y, tw, RED);
+  // pointer
+  gfx->fillTriangle(px1, py1, px2, py2, px3, py3, WHITE);
+  gfx->drawTriangle(px1, py1, px2, py2, px3, py3, BLACK);
+  gfx->drawTriangle(px1 - 1, py1, px2 +1, py2 -1, px3 +1, py3 +1, BLACK);
+
+  gfx->setTextSize(1);
+  gfx->setTextColor(WHITE, BLACK);
+  gfx->setCursor(x - 20, y - 20);
+  gfx->setFont(u8g2_font_inb21_mr);
+  gfx->println("117");
+  gfx->setCursor(x - 18, y - 50);
+  gfx->setFont(u8g2_font_helvB14_te);
+  gfx->println("CGM");
 
   return micros() - start;
 
+}
+
+void PfdColorVTape( uint16_t x, uint16_t y1, uint16_t y2, uint16_t w, uint16_t color) {
+  uint16_t color_1, color_2, color_3;
+  uint16_t h = y2 - y1;
+  color_1 = color_2 = color_3 = color;
+  if (color == GREEN){
+    color_1 = GREEN_1;
+    color_2 = GREEN_2;
+    color_3 = GREEN_3;
+  }
+  if (color == YELLOW){
+    color_1 = YELLOW_1;
+    color_2 = YELLOW_2;
+    color_3 = YELLOW_3;
+  }
+  if (color == RED){
+    color_1 = RED_1;
+    color_2 = RED_2;
+    color_3 = RED_3;
+  }
+  if (h > 0) {
+    for(int i = 0; i < w; i++) {
+      if (w > 2 && (i == 0 || i == w-1)) gfx->drawFastVLine(x+i, y1, h, color_3);
+      else if (w > 4 && (i == 1 || i == w-2)) gfx->drawFastVLine(x+i, y1, h, color_2);
+      else if (w > 6 && (i == 2 || i == w-3)) gfx->drawFastVLine(x+i, y1, h, color_1);
+      else gfx->drawFastVLine(x+i, y1, h, color);
+    }
+  }
 }
